@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Desplegable con Slideshow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .menu button {
+            margin: 0 10px;
+            padding: 10px;
+            cursor: pointer;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .submenu {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 10; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .menu div:hover .submenu {
+            display: block; /* Mostrar el submenú al pasar el mouse sobre el botón */
+        }
+        .submenu button {
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: block;
+            margin: 5px 0;
+            width: 100%; 
+        }
+        
+        .slideshow {
+            max-width: 600px;
+            margin: 40px auto; /* Aumentado para dar espacio al menú */
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        .slides {
+            display: none;
+            width: 100%;
+        }
+        .active {
+            display: block;
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 5px;
+        }
+        .prev {
+            left: 10px;
+            transform: translateY(-50%);
+        }
+        .next {
+            right: 10px;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Mi Página con Menú Desplegable</h1>
+</header>
+
+<div class="menu">
+  
+
+    <div id="inicioSub" class="submenu">
+        <button>Opción 1</button>
+        <button>Opción 2</button>
+        <button>Opción 3</button>
+    </div>
+    <div id="galeriaSub" class="submenu">
+        <button>Opción 1</button>
+        <button>Opción 2</button>
+        <button>Opción 3</button>
+    </div>
+    <div id="estudianteSub" class="submenu">
+        <button>Opción 1</button>
+        <button>Opción 2</button>
+        <button>Opción 3</button>
+    </div>
+    <div id="profesoresSub" class="submenu">
+        <button>Opción 1</button>
+        <button>Opción 2</button>
+        <button>Opción 3</button>
+    </div>
+
+
+    <button onmouseover="showSubMenu('inicioSub', this)">Inicio</button>
+    <button onmouseover="showSubMenu('galeriaSub', this)">Galería</button>
+    <button onmouseover="showSubMenu('estudianteSub', this)">Estudiante</button>
+    <button onmouseover="showSubMenu('profesoresSub', this)">Profesores</button>
+</div>
+
+<div class="slideshow">
+    <img class="slides active" src="img/spider_man_no_way_home_by_alantice515_df0lf8j.jpg" alt="Slide 1">
+    <img class="slides" src="img/marvel_s_spider_man_20210715000130_by_hasbro727_dezrfd3.jpg" alt="Slide 2">
+    <img class="slides" src="img/spider_man_by_andres5555_df0z7bl.jpg" alt="Slide 3">
+    <!-- Aquí puedes añadir más imágenes -->
+
+    <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+    <button class="next" onclick="changeSlide(1)">&#10095;</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slides');
+
+    function showSubMenu(id, button) {
+        const submenu = document.querySelectorAll('.submenu');
+        submenu.forEach(sub => {
+            sub.style.display = 'none'; // Oculta todos los submenús
+        });
+
+        const currentSubMenu = document.getElementById(id);
+        const rect = button.getBoundingClientRect();
+
+        currentSubMenu.style.display = 'block';
+        currentSubMenu.style.top = `${rect.bottom}px`;
+        currentSubMenu.style.left = `${rect.left}px`;
+    }
+
+    document.body.addEventListener('mouseleave', function() {
+        const submenu = document.querySelectorAll('.submenu');
+        submenu.forEach(sub => {
+            sub.style.display = 'none'; // Oculta todos los submenús al salir del área
+        });
+    });
+
+    function changeSlide(direction) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + direction + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    // Cambiar de slide cada 3 segundos
+    setInterval(() => changeSlide(1), 2000);
+</script>
+
+</body>
+</html>
